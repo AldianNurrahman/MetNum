@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Metode Segiempat</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.min.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="pilih-metode.html">Pilih Metode</a></li>
+      <li><a href="about.html">Tentang</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h1>Metode Segiempat</h1>
+    <form id="form-segiempat">
+      <label>Fungsi f(x): <input type="text" id="fungsi" value="x^2 + 3x + 2" /></label>
+      <label>Batas a: <input type="number" id="a" value="1" /></label>
+      <label>Batas b: <input type="number" id="b" value="5" /></label>
+      <label>Jumlah Partisi: <input type="number" id="n" value="14" /></label>
+      <button type="submit">Hitung Integral</button>
+    </form>
+    <section id="output-segiempat"></section>
+  </main>
+
+  <script src="js/segiempat.js"></script>
+</body>
+</html>
