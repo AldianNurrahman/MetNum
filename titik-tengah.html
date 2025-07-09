@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metode Titik Tengah</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.min.js"></script>
 </head>
 <body>
   <nav>
@@ -17,15 +17,47 @@
 
   <main class="container">
     <h1>Metode Titik Tengah</h1>
-    <form id="form-titik-tengah">
-      <label>Fungsi f(x): <input type="text" id="fungsi" value="1/x" /></label>
-      <label>Batas a: <input type="number" id="a" value="1" /></label>
-      <label>Batas b: <input type="number" id="b" value="2" /></label>
-      <label>Jumlah Partisi: <input type="number" id="n" value="20" /></label>
-      <button type="submit">Hitung Integral</button>
+
+    <details>
+      <summary>📘 Penjelasan Metode Titik Tengah</summary>
+      <p>
+        Metode titik tengah menghitung pendekatan integral tentu dengan menjumlahkan nilai fungsi pada titik tengah tiap subinterval. Semakin banyak partisi (atau semakin kecil h), hasil pendekatannya semakin mendekati nilai eksak.
+      </p>
+      <p><strong>Rumus:</strong></p>
+      <p>
+        L = h × [f(x₀ + h/2) + f(x₁ + h/2) + ... + f(xₙ₋₁ + h/2)]
+      </p>
+    </details>
+
+    <form>
+      <label for="fungsi">f(x):</label>
+      <input type="text" id="fungsi" placeholder="Contoh: x^2, exp(x)" />
+
+      <label for="a">Batas bawah (a):</label>
+      <input type="number" id="a" step="any" />
+
+      <label for="b">Batas atas (b):</label>
+      <input type="number" id="b" step="any" />
+
+      <label for="n">Jumlah Partisi (opsional):</label>
+      <input type="number" id="n" step="1" />
+
+      <label for="h">Atau nilai h (opsional):</label>
+      <input type="number" id="h" step="any" />
+
+      <label for="eksak">Nilai Eksak (opsional):</label>
+      <input type="number" id="eksak" step="any" />
+
+      <button type="button" id="hitung" class="btn">Hitung</button>
     </form>
-    <section id="output-titik-tengah"></section>
+
+    <div id="hasil"></div>
+    <div id="tabel"></div>
   </main>
+
+  <footer>
+    <p>© 2025 Metode Pias | Aldian & Fazri</p>
+  </footer>
 
   <script src="js/titik-tengah.js"></script>
 </body>
