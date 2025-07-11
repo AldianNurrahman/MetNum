@@ -1,3 +1,4 @@
+
 document.getElementById("hitung").addEventListener("click", function () {
   const a = parseFloat(document.getElementById("a").value);
   const b = parseFloat(document.getElementById("b").value);
@@ -26,55 +27,62 @@ document.getElementById("hitung").addEventListener("click", function () {
     h = (b - a) / n;
   }
 
-  // Parsing fungsi
   let fx;
   try {
     let parsed = fungsiInput
-      .replace(/exp\(([^)]+)\)/g, 'Math.exp($1)')
-      .replace(/e\^([a-zA-Z0-9\+\-\*\/\^]+)/g, 'Math.exp($1)')
-      .replace(/\^/g, '**'); // x^2 jadi x**2
+      .replace(/exp\(([^)]+)\)/gi, 'Math.exp($1)')
+      .replace(/e\^([a-zA-Z0-9\+\-\*\/\^]+)/gi, 'Math.exp($1)')
+      .replace(/\^/g, '**');
 
     fx = function (x) {
       const expr = parsed.replace(/x/g, `(${x})`);
-      return eval(expr);
+      const hasil = eval(expr);
+      if (isNaN(hasil)) throw new Error("Hasil fungsi NaN");
+      return hasil;
     };
   } catch (e) {
-    alert("Fungsi tidak valid.");
+    alert("Fungsi f(x) tidak valid atau hasilnya tidak bisa dihitung. Coba periksa kembali penulisan seperti 'exp(x)' atau 'x^2'.");
     return;
   }
 
-  // Hitung titik tengah
-  const xMid = [], fxMid = [];
+  const xi = [], fxi = [];
   for (let i = 0; i < n; i++) {
-    const xi = a + i * h;
-    const mid = xi + h / 2;
-    xMid.push(mid);
-    fxMid.push(fx(mid));
+    xi[i] = a + (i * h) + (h / 2);
+    fxi[i] = fx(xi[i]);
   }
 
-  // Hitung luas pendekatan
-  const total = fxMid.reduce((a, b) => a + b, 0);
-  const luas = h * total;
+  const luasGabungan = h * fxi.reduce((a, b) => a + b, 0);
 
-  const eksak = eksakInput ? parseFloat(eksakInput) : luas;
-  const galat = Math.abs((luas - eksak) / eksak);
+  let eksak = parseFloat(eksakInput);
+  if (isNaN(eksak)) {
+    // Hitung eksak dengan partisi tinggi (1000)
+    let N = 1000;
+    let hh = (b - a) / N;
+    let sum = 0;
+    for (let i = 0; i < N; i++) {
+      const xtengah = a + (i * hh) + (hh / 2);
+      sum += fx(xtengah);
+    }
+    eksak = hh * sum;
+  }
 
-  // Output hasil
+  const galat = Math.abs((luasGabungan - eksak) / eksak);
+
   document.getElementById("hasil").innerHTML = `
-    <p><strong>Luas Pias Gabungan:</strong> ${luas.toFixed(8)}</p>
+    <p><strong>Luas Pias Gabungan:</strong> ${luasGabungan.toFixed(8)}</p>
     <p><strong>Nilai Eksak:</strong> ${eksak.toFixed(8)}</p>
     <p><strong>Galat Relatif:</strong> ${galat.toFixed(8)}</p>
   `;
 
-  // Tabel titik tengah
   let tabelHTML = `
-    <h3>Tabel Titik Tengah dan f(x)</h3>
+    <h3>Tabel xi dan f(xi)</h3>
     <table>
-      <tr><th>i</th><th>titik tengah</th><th>f(titik)</th></tr>
+      <tr><th>i</th><th>xi (tengah)</th><th>f(xi)</th></tr>
   `;
   for (let i = 0; i < n; i++) {
-    tabelHTML += `<tr><td>${i + 1}</td><td>${xMid[i].toFixed(4)}</td><td>${fxMid[i].toFixed(6)}</td></tr>`;
+    tabelHTML += `<tr><td>${i}</td><td>${xi[i].toFixed(4)}</td><td>${fxi[i].toFixed(6)}</td></tr>`;
   }
   tabelHTML += `</table>`;
   document.getElementById("tabel").innerHTML = tabelHTML;
 });
+               
