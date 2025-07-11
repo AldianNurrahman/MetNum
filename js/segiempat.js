@@ -1,3 +1,4 @@
+
 document.getElementById("hitung").addEventListener("click", function () {
   const a = parseFloat(document.getElementById("a").value);
   const b = parseFloat(document.getElementById("b").value);
@@ -56,7 +57,19 @@ document.getElementById("hitung").addEventListener("click", function () {
   }
 
   const luasGabungan = (h / 2) * total;
-  const eksak = eksakInput ? parseFloat(eksakInput) : luasGabungan;
+
+  let eksak = parseFloat(eksakInput);
+  if (isNaN(eksak)) {
+    // Hitung eksak dengan partisi tinggi
+    let N = 1000;
+    let hh = (b - a) / N;
+    let sum = fx(a) + fx(b);
+    for (let i = 1; i < N; i++) {
+      sum += 2 * fx(a + i * hh);
+    }
+    eksak = (hh / 2) * sum;
+  }
+
   const galat = Math.abs((luasGabungan - eksak) / eksak);
 
   document.getElementById("hasil").innerHTML = `
@@ -76,3 +89,4 @@ document.getElementById("hitung").addEventListener("click", function () {
   tabelHTML += `</table>`;
   document.getElementById("tabel").innerHTML = tabelHTML;
 });
+        
